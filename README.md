@@ -1,10 +1,11 @@
 # CenFuzz
 [![Build Status](https://github.com/censoredplanet/CenFuzz/workflows/CenFuzz/badge.svg)](https://github.com/censoredplanet/CenFuzz/actions)
+[![DOI](https://zenodo.org/badge/547397275.svg)](https://zenodo.org/badge/latestdoi/547397275)
 
 
 *Are you using `CenFuzz`? If so, let us know! Shoot us an email at censoredplanet@umich.edu.*
 
-`CenFuzz` is a deterministic censorship and middlebox fuzzing tool that performs application-layer fuzzing strategies on blocked connections such that the same strategies are performed across all tested devices. `CenFuzz` performs several modifications to the HTTP GET Request and the TLS Client Hello packets, based on the grammars of these protocols. See beloa and the `http_fuzzer/` and `https_fuzzer` directories for a set of deterministic fuzzers for each protocol. For more information, refer to [our paper](https://ramakrishnansr.org/publications). 
+`CenFuzz` is a deterministic censorship and middlebox fuzzing tool that performs application-layer fuzzing strategies on blocked connections such that the same strategies are performed across all tested devices. `CenFuzz` performs several modifications to the HTTP GET Request and the TLS Client Hello packets, based on the grammars of these protocols. See below and the `http_fuzzer/` and `https_fuzzer` directories for a set of deterministic fuzzers for each protocol. For more information, refer to [our paper](https://ramakrishnansr.org/publications). 
 
 The following HTTP fuzzers are provided (for example domain `example.com`). 
 
