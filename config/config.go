@@ -16,6 +16,7 @@ var UncensoredKeyword string
 var Protocol string
 var NumberOfProbesPerTest int
 var All bool
+var Randomized bool
 var NumWorkers int
 var Iface string
 var Srcip string
@@ -44,6 +45,7 @@ func init() {
 	flag.StringVar(&Iface, "iface", "", "Interface to send measurements on")
 	flag.StringVar(&Srcip, "srcip", "", "Source IP to send measurements from")
 	flag.IntVar(&NumberOfProbesPerTest, "numprobes", 3, "Number of random requests to send per test (default 3)")
+	flag.BoolVar(&Randomized, "randomized", false, "If true, starts the uTLS Client with the HelloRandomized clientHelloID which randomly adds/reorders extensions, ciphersuites, etc. If false, uses the default HelloGolang clientHelloID. Default - False")
 
 	//Analyze config
 	flag.StringVar(&Dir, "analyze-dir", "", "Directory with fuzz files (required)")

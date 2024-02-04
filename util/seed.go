@@ -82,7 +82,7 @@ func CapitalizedPermutations(ip string, op string) []string {
 	return unique(s)
 }
 
-//TODO: This currently only works for ASCII characters
+// TODO: This currently only works for ASCII characters
 func GenerateAllCapitalizedPermutations(word string) []string {
 	return CapitalizedPermutations(word, "")
 }
@@ -141,7 +141,50 @@ func GenerateAllHostNamePaddings() []string {
 	return hostnameWithAllPadding
 }
 
-var GetAlternatives = []string{"POST", "PUT", "PATCH", "DELETE", "XXX", " "}
+// fills hostname with spaces up to the max SNI character limit
+func GenerateHostNameLongPadding() string {
+	method := rand.Intn(3)
+	prefixPaddingLength := 0
+	suffixPaddingLength := 0
+	if method == 0 {
+		prefixPaddingLength = rand.Intn(128-64) + 64
+		suffixPaddingLength = rand.Intn(128-64) + 64
+	} else if method == 1 {
+		suffixPaddingLength = 255
+	} else {
+		prefixPaddingLength = 255
+	}
+
+	hostnameWithLongPadding := strings.Repeat(" ", prefixPaddingLength)
+	hostnameWithLongPadding += "%s"
+	hostnameWithLongPadding += strings.Repeat(" ", suffixPaddingLength)
+	return hostnameWithLongPadding
+}
+
+// fills hostname with variable long paddings
+func GenerateAllHostNameLongPaddings() []string {
+	var hostnameWithAllLongPadding []string
+	for i := 115; i < 120; i++ {
+		for j := 115; j < 120; j++ {
+			hostnameWithLongPadding := strings.Repeat(" ", i)
+			hostnameWithLongPadding += "%s"
+			hostnameWithLongPadding += strings.Repeat(" ", j)
+			hostnameWithAllLongPadding = append(hostnameWithAllLongPadding, hostnameWithLongPadding)
+		}
+	}
+
+	hostnameWithLongPadding := "%s"
+	hostnameWithLongPadding += strings.Repeat(" ", 255)
+	hostnameWithAllLongPadding = append(hostnameWithAllLongPadding, hostnameWithLongPadding)
+
+	hostnameWithLongPadding = strings.Repeat(" ", 255)
+	hostnameWithLongPadding += "%s"
+	hostnameWithAllLongPadding = append(hostnameWithAllLongPadding, hostnameWithLongPadding)
+
+	return hostnameWithAllLongPadding
+}
+
+var GetAlternatives = []string{"POST", "PUT", "PATCH", "DELETE", "CONNECT", "HEAD", "OPTIONS", "XXX", " "}
 
 func GenerateGetAlternatives() string {
 	return GenerateAlternatives(GetAlternatives)
@@ -181,7 +224,7 @@ func GenerateAllPathAlternatives() []string {
 	return GenerateAllAlternatives(PathAlternatives)
 }
 
-var HTTPHeaders = []string{"Accept: text/html", "Accept: application/xml", "Accept: text/html,application/xhtml+xml", "Accept: application/json", "Accept: xxx", "Accept-Charset: utf-8", "Accept-Charset: xxx", "Accept-Datetime: Thu, 31 May 2007 20:35:00 GMT", "Accept-Datetime: xxx", "Accept-Encoding: gzip, deflate", "Accept-Encoding: xxx", "Accept-Language: en-US", "Accept-Language: xxx", "Access-Control-Request-Method: GET", "Access-Control-Request-Method: xxx", "Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "Cache-Control: no-cache", "Cache-Control: xxx", "Connection: keep-alive", "Connection: xxx", "Content-Encoding: gzip", "Content-Encoding: xxx", "Content-Length: 1000", "Content-MD5: Q2hlY2sgSW50ZWdyaXR5IQ==", "Content-Type: application/x-www-form-urlencoded", "Content-Type: xxx", "Cookie: $Version=1; Skin=new;", "Cookie: xxx", "Date: Tue, 15 Nov 1994 08:12:31 GMT", "Expect: 100-continue", "Expect: xxx", "From: user@example.com", "If-Match: \"737060cd8c284d8af7ad3082f209582d\"", "If-Modified-Since: Sat, 29 Oct 1994 19:43:31 GMT", "If-None-Match: \"737060cd8c284d8af7ad3082f209582d]\"", "If-Range: \"737060cd8c284d8af7ad3082f209582d\"", "If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT", "Max-Forwards: 10", "Max-Forwards: xxx", "Origin: http://www.example-xxx.com", "Pragma: no-cache", "Pragma: xxx", "Prefer: return=representation", "Prefer: xxx", "Proxy-Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "Range: bytes=500-999", "Referer: http://example-xxx.com", "TE: trailers, deflate", "Trailer: Max-Forwards", "Trailer: xxx", "Transfer-Encoding: chunked", "Transfer-Encoding: xxx", "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0", "User-Agent: xxx", "Upgrade: h2c, HTTPS/1.3, IRC/6.9, RTA/x11, websocket", "Upgrade: xxx", "Via: 1.0 fred, 1.1 example-xxx.com (Apache/1.1)", "Warning: 199 Miscellaneous warning", "Warning: xxx"}
+var HTTPHeaders = []string{"Accept: text/html", "Accept: application/xml", "Accept: text/html,application/xhtml+xml", "Accept: application/json", "Accept: image/*", "Accept: xxx", "Accept-Charset: utf-8", "Accept-Charset: xxx", "Accept-Datetime: Thu, 31 May 2007 20:35:00 GMT", "Accept-Datetime: xxx", "Accept-Encoding: gzip, deflate", "Accept-Encoding: xxx", "Accept-Language: en-US", "Accept-Language: xxx", "Access-Control-Request-Method: GET", "Access-Control-Request-Method: xxx", "Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "Cache-Control: no-cache", "Cache-Control: xxx", "Connection: keep-alive", "Connection: xxx", "Content-Encoding: gzip", "Content-Encoding: xxx", "Content-Length: 1000", "Content-MD5: Q2hlY2sgSW50ZWdyaXR5IQ==", "Content-Type: application/x-www-form-urlencoded", "Content-Type: xxx", "Cookie: $Version=1; Skin=new;", "Cookie: xxx", "Date: Tue, 15 Nov 1994 08:12:31 GMT", "Expect: 100-continue", "Expect: xxx", "From: user@example.com", "If-Match: \"737060cd8c284d8af7ad3082f209582d\"", "If-Modified-Since: Sat, 29 Oct 1994 19:43:31 GMT", "If-None-Match: \"737060cd8c284d8af7ad3082f209582d]\"", "If-Range: \"737060cd8c284d8af7ad3082f209582d\"", "If-Unmodified-Since: Sat, 29 Oct 1994 19:43:31 GMT", "Max-Forwards: 10", "Max-Forwards: xxx", "Origin: http://www.example-xxx.com", "Pragma: no-cache", "Pragma: xxx", "Prefer: return=representation", "Prefer: xxx", "Proxy-Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "Range: bytes=500-999", "Referer: http://example-xxx.com", "TE: trailers, deflate", "Trailer: Max-Forwards", "Trailer: xxx", "Transfer-Encoding: chunked", "Transfer-Encoding: xxx", "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0", "User-Agent: xxx", "Upgrade: h2c, HTTPS/1.3, IRC/6.9, RTA/x11, websocket", "Upgrade: xxx", "Via: 1.0 fred, 1.1 example-xxx.com (Apache/1.1)", "Warning: 199 Miscellaneous warning", "Warning: xxx"}
 
 func GenerateHeaderAlternatives() string {
 	return GenerateAlternatives(HTTPHeaders)
@@ -225,7 +268,8 @@ var cipherSuiteAlternatives = []string{fmt.Sprint(tls.TLS_RSA_WITH_RC4_128_SHA),
 	fmt.Sprint(tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256),
 	fmt.Sprint(tls.TLS_AES_128_GCM_SHA256),
 	fmt.Sprint(tls.TLS_AES_256_GCM_SHA384),
-	fmt.Sprint(tls.TLS_CHACHA20_POLY1305_SHA256)}
+	fmt.Sprint(tls.TLS_CHACHA20_POLY1305_SHA256),
+	fmt.Sprint(tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305)}
 
 func GenerateCipherSuiteAlternatives() string {
 	return GenerateAlternatives(cipherSuiteAlternatives)
@@ -341,7 +385,7 @@ func GenerateAllServerNameAlternatives() []string {
 	return GenerateAllAlternatives(servernames)
 }
 
-//https://azbigmedia.com/business/here-are-2021s-most-popular-tlds-and-domain-registration-trends/
+// https://azbigmedia.com/business/here-are-2021s-most-popular-tlds-and-domain-registration-trends/
 var TLDs = []string{"%s|tld|com", "%s|tld|xyz", "%s|tld|net", "%s|tld|club", "%s|tld|me", "%s|tld|org", "%s|tld|co", "%s|tld|shop", "%s|tld|info", "%s|tld|live"}
 
 func GenerateTLDAlternatives() string {
@@ -352,7 +396,7 @@ func GenerateAllTLDAlternatives() []string {
 	return GenerateAllAlternatives(TLDs)
 }
 
-//https://securitytrails.com/blog/most-popular-subdomains-mx-records#:~:text=As%20you%20can%20see%2C%20the,forums%2C%20wiki%2C%20community).
+// https://securitytrails.com/blog/most-popular-subdomains-mx-records#:~:text=As%20you%20can%20see%2C%20the,forums%2C%20wiki%2C%20community).
 var Subdomains = []string{"%s|subdomain|www", "%s|subdomain|mail", "%s|subdomain|forum", "%s|subdomain|m", "%s|subdomain|blog", "%s|subdomain|shop", "%s|subdomain|forums", "%s|subdomain|wiki", "%s|subdomain|community", "%s|subdomain|ww1"}
 
 func GenerateSubdomainsAlternatives() string {
