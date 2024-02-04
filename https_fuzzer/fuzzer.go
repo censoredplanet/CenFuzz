@@ -78,6 +78,14 @@ func CreateTLSConfig(requestWord RequestWord) *utls.Config {
 
 	//Handle servername changes - This has to be done at runtime, since the strategies would be selected first, but the servername itself is only known at runtime
 	serverNameParts := strings.Split(requestWord.Servername, "|")
+
+	//Check servername length and trim accordingly if the long padding overflows the max SNI field length of 255 characters
+	serverNameLen := len(serverNameParts[0])
+	if serverNameLen > 255 {
+		requestWord.Servername = strings.Replace(requestWord.Servername, " ", "", serverNameLen-255)
+		serverNameParts[0] = strings.Replace(serverNameParts[0], " ", "", serverNameLen-255)
+	}
+
 	if len(serverNameParts) > 1 {
 		//ServerNameParts[1] contains the strategy to be run at runtime
 		if serverNameParts[1] == "omit" {

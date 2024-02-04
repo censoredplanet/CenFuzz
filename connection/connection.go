@@ -124,10 +124,15 @@ func SendHTTPRequest(conn *Connection, request string) interface{} {
 	return string(response[:responseLength])
 }
 
-func SendHTTPSRequest(conn *Connection, config utls.Config) *util.TLSdata {
+func SendHTTPSRequest(conn *Connection, tlsconfig utls.Config) *util.TLSdata {
 	defer conn.Raw.Close()
 	conn.Raw.SetReadDeadline(time.Now().Add(2 * time.Second))
-	tlsConn := utls.UClient(conn.Raw, &config, utls.HelloGolang)
+	var tlsConn *utls.UConn
+	if config.Randomized {
+		tlsConn = utls.UClient(conn.Raw, &tlsconfig, utls.HelloRandomized)
+	} else {
+		tlsConn = utls.UClient(conn.Raw, &tlsconfig, utls.HelloGolang)
+	}
 	defer tlsConn.Close()
 	//Use refraction networking's utls instead of using crypto/tls to have more flexibility
 	err := tlsConn.BuildHandshakeState()
@@ -153,7 +158,7 @@ func SendHTTPSRequest(conn *Connection, config utls.Config) *util.TLSdata {
 		ServerName:                 state.ServerName,
 	}
 
-	getRequest := fmt.Sprintf("GET / HTTP/1.1\r\nHost:%s\r\nConnection: close\r\n\r\n", config.ServerName)
+	getRequest := fmt.Sprintf("GET / HTTP/1.1\r\nHost:%s\r\nConnection: close\r\n\r\n", tlsconfig.ServerName)
 	_, err = tlsConn.Write([]byte(getRequest))
 	if err != nil {
 		err = conn.handleError(err)

@@ -29,6 +29,8 @@ func HTTPSFuzzerMapping(fuzzer int) string {
 		return "SNI TLD Alternate"
 	case 8:
 		return "SNI Subdomain Alternate"
+	case 9:
+		return "SNI Long Padding"
 	default:
 		return "NA"
 	}
@@ -54,6 +56,8 @@ func (f FuzzerSpec) HTTPSFuzzerInterface() https_fuzzer.Fuzzer {
 		return &https_fuzzer.ServernameTLDAlternate{}
 	case 8:
 		return &https_fuzzer.ServernameSubdomainsAlternate{}
+	case 9:
+		return &https_fuzzer.ServernameLongPadding{}
 	default:
 		panic("unknown fuzzer")
 	}
@@ -118,7 +122,7 @@ func (h *HTTPSWorker) GenerateTemplate(response interface{}, keyword string) int
 	return returnResponse
 }
 
-//TODO: there are more efficient ways of doing this than going through the list twice, but this will do for now
+// TODO: there are more efficient ways of doing this than going through the list twice, but this will do for now
 func (h *HTTPSWorker) MatchesControl(results []*util.Result) []*util.Result {
 	var normalResponse interface{}
 	var normalError interface{}

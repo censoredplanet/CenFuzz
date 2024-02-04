@@ -27,6 +27,7 @@ The following HTTP fuzzers are provided (for example domain `example.com`).
 |       14       | HostName Alternate           | Repeat or modify domains in certain ways  | ""                     |              5            |
 |       15       | Hostname TLD Alternate       | Provide different TLD to domain           | example.net            |              10           |
 |       16       | Hostname Subdomain Alternate | Provide different subdomain               | mail.example.net       |              10           |
+|       17       | Hostname Long Padding        | Padding space characters to hostname      |           example.com  |              27           |
 
 The following HTTPS fuzzers are provided (for example domain `example.com`). 
 
@@ -40,6 +41,7 @@ The following HTTPS fuzzers are provided (for example domain `example.com`).
 |       6         | SNI Alternate                | Repeat or modify domains in certain ways  | " "                    |              4            |
 |       7         | SNI TLD Alternate            | Provide different TLD to domain           | example.org            |              10           |
 |       8         | SNI Subdomain Alternate      | Provide different subdomain               | wiki.example.net       |              10           |
+|       9         | SNI Long Padding             | Padding space characters to SNI           |           example.com  |              27           |
 
 
 ## Installation
@@ -50,20 +52,21 @@ The following HTTPS fuzzers are provided (for example domain `example.com`).
 ## Configuration
 The following flags can be provided for running measurements:
 
-|         Flag           |          Default         |                       Function                         |                  Example                   |
-| ---------------------- | ------------------------ | ------------------------------------------------------ | ------------------------------------------ |
-| infile                 | Required                 | A csv file with `endpoint, domain` pairs to measure    | `examples/input.csv`                       |
-| fuzzer-infile          | Required                 | A csv file with `Fuzzer ID, All permutations? boolean` | `examples/http-fuzz-input.csv`             |
-| outfile                | stdout                   | File to write output in                                | `examples/example_direct_http_fuzz.json`   |
-| uncensored             | example.com              | Control keyword which is not blocked                   |                                            |
-| num-workers            | 1                        | Number of workers to run measurements parallely        |                                            |
-| fuzz-delay             | 5                        | Number of seconds between unblocked measurements       |                                            |
-| stateful-delay         | 120                      | Number of seconds between blocked measurements         |                                            |
-| protocol               | http                     | HTTP or HTTPS protocol                                 |                                            |
-| All                    | false                    | If true, run all permutations                          |                                            |
-| iface                  | ""                       | Network interface to use to run measurements           |                                            |
-| srcip                  | ""                       | Select source IP address to use (can be used to spoof) |                                            |
-| numprobes              | 3                        | No. of permutations per strategy in case All = false   |                                            |
+|         Flag           |          Default         |                       Function                               |                  Example                   |
+| ---------------------- | ------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
+| infile                 | Required                 | A csv file with `endpoint, domain` pairs to measure          | `examples/input.csv`                       |
+| fuzzer-infile          | Required                 | A csv file with `Fuzzer ID, All permutations? boolean`       | `examples/http-fuzz-input.csv`             |
+| outfile                | stdout                   | File to write output in                                      | `examples/example_direct_http_fuzz.json`   |
+| uncensored             | example.com              | Control keyword which is not blocked                         |                                            |
+| num-workers            | 1                        | Number of workers to run measurements parallely              |                                            |
+| fuzz-delay             | 5                        | Number of seconds between unblocked measurements             |                                            |
+| stateful-delay         | 120                      | Number of seconds between blocked measurements               |                                            |
+| protocol               | http                     | HTTP or HTTPS protocol                                       |                                            |
+| All                    | false                    | If true, run all permutations                                |                                            |
+| iface                  | ""                       | Network interface to use to run measurements                 |                                            |
+| srcip                  | ""                       | Select source IP address to use (can be used to spoof)       |                                            |
+| numprobes              | 3                        | No. of permutations per strategy in case All = false         |                                            |
+| randomized             | false                    | Randomizes order of extensions and ciphersuites (HTTPS only) |                                            |
 
 The following flags can be provided for analyzing measurements:
 |         Flag           |          Default         |                       Function                         |           Example             |
